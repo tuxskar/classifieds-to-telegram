@@ -79,7 +79,12 @@ class Crawler:
          some new and return the new ones
         :return: [Post]
         """
-        self.last_posts = self.get_last_posts()
+        last_posts = self.get_last_posts()
+        if last_posts is None:
+            # There was some problems requesting the web page (like having a catpcha)
+            return None
+
+        self.last_posts = last_posts
         self.new_posts = self.get_new_posts(self.last_posts)
         if self.new_posts:
             return self.store_posts(self.new_posts, chat_id, 'SAVED')

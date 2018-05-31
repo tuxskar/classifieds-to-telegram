@@ -31,12 +31,12 @@ class WallapopCrawler(Crawler):
         raw_posts = html.findAll("div", {"class": "card-product"})
 
         for post in raw_posts:
-            title_element = post.find("a", {"class": "product-info-title"})
+            title_element = post.find("span", {"class": "product-info-title"})
             if not title_element:
                 continue
             title = cleaning_spaces(self.text(title_element))
-            href = title_element['href']
-            description = self.text(post.find("a", {"class": "product-info-category"}))
+            href = title_element.parent['href']
+            description = self.text(post.find("p", {"class": "product-info-description"}))
             id_post = str(href.split('-')[-1])
             price_full = cleaning_spaces(self.text(post.find("span", {"class": "product-info-price"})))
             price = re.search('\d+', price_full)  # getting the integer values of the price

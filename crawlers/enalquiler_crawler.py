@@ -34,13 +34,15 @@ class EnalquilerCrawler(Crawler):
             list_position = post.get('list-position')
             if not list_position:
                 continue
-            title_element = post.find("a", {"class": "property-title"})
+
+            title_container = post.find("div", {"class": "property-info-title"})
+            title_element = title_container.find("a")
             title = cleaning_spaces(self.text(title_element))
             href = title_element['href']
-            description = cleaning_spaces(self.text(post.find("div", {"class": "property-info-wrapper"})))
+            description = cleaning_spaces(self.text(post.find("div", {"class": "property-info-description"})))
             id_post = str(post['list-item'])
-            price_full = cleaning_spaces(self.text(post.find("div", {"class": "property-price"})))
-            price = price_full[:-2]  # Removing currency symbol
+            price_full = cleaning_spaces(self.text(post.find("span", {"class": "info-price"})))
+            price = price_full[:-1]  # Removing currency symbol
             image_element = post.find('div', {'class': 'property-img-wrapper'})
             image_src = None
             if image_element:
