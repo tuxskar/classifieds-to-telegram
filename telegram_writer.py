@@ -31,7 +31,9 @@ class TelegramWriter:
                                                                               bot.target_url))
                     chat_id = bot.chat_id or self.chat
                     posts = bot.save_last_updates(chat_id)
-                    if settings.DEBUG:
+                    if posts is None:
+                        self.send_error('Unable to get information from {}'.format(bot.target_url))
+                    if settings.DEBUG and posts is not None:
                         print('-- {} New posts saved found'.format(len(posts)))
                 except Exception as e:
                     exc_type, exc_value, exc_traceback = sys.exc_info()

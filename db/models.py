@@ -6,10 +6,12 @@ from sqlalchemy import String
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import platform
 
 from settings import DB_PATH
 
-engine = create_engine('sqlite:////{}'.format(DB_PATH))
+sqlite_prefix = 'sqlite:///' if platform.system() == 'Windows' else 'sqlite:////'
+engine = create_engine(sqlite_prefix + DB_PATH)
 Session = sessionmaker(bind=engine)
 Base = declarative_base()
 session = Session()
